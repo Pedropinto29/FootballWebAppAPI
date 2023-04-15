@@ -1,0 +1,215 @@
+openapi: 3.0.0
+info:
+  version: '1'
+  title: FootballApp
+  description: Api for a football club app
+paths:
+  /login: 
+    post : 
+      tags:
+        - User
+        - Admin
+      description: Login to the page
+      responses:
+        '200' : 
+          description: Login form
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/login'
+  /articles:
+    get:
+      tags:
+        - User
+        - Admin
+      description: Returns the new articles
+      responses:
+        '200' : 
+          description: Array of the articles
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/article'
+        '400' :
+          description: Couldn't find articles
+    post:
+      description: Write a new article
+      responses:
+        '200':
+          description: article form
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/article'
+  /articles/{idArticle}:
+    get:
+      tags:
+        - User
+        - Admin
+      description: Returns the article
+      parameters:
+        - name: idArticle
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Json of the article
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/article'
+        '400' : 
+          description: 'Error, article not found'
+    delete :
+      tags:
+        - Admin
+      description: Delete article
+      parameters:
+        - name: idArticle
+          in: path
+          required : true
+          schema:
+            type: integer
+      responses:
+        '200' : 
+          description: Article deleted
+        '400': 
+          description: Article not found
+
+    put :
+      tags:
+        - Admin
+      description: Edit article
+      parameters:
+        - name: idArticle
+          in: path
+          required : true
+          schema : 
+            type: integer
+      responses:
+        '200': 
+          description: Article edited
+        '400': 
+          description: Article not found
+
+  /games : 
+    get:
+      tags:
+        - User
+        - Admin
+      description: returns a list of the last and future games of the club
+      responses:
+        '200':
+          description: Array of matches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/game'
+  
+  /games/{gameId}:
+    post:
+      tags:
+        - Admin
+      description: Add a football game to the list
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: football match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/game'
+    put:
+      tags:
+        - Admin
+      description: edit football game
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200' :
+          description: Game scores edited
+  
+  /profile:
+    get:
+      tags:
+        - User
+        - Admin
+      description: Profile page
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'      
+    
+components:
+  schemas:
+    login:
+      properties:
+        username : 
+          type: string
+        password:
+          type: string
+          format: password
+    article:
+      properties:
+        idArticle:
+          type: integer
+        title:
+          type: string
+        subtitle:
+          type: string
+        body:
+          type: string
+    game:
+      properties:
+        gameId:
+          type: integer
+        homeTeam:
+          type: string
+        awayTeam:
+          type: string
+        score: 
+          type: string
+        competition:
+          type: string
+        date:
+          type: string
+          format: date
+        time:
+          type : string
+          format: time
+    
+    user:
+      properties:
+        name: 
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+          format: email
+         
+
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/PEDRODACOSTAPINTO/FootballApp/1
