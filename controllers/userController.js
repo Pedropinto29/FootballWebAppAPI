@@ -21,9 +21,10 @@ login = async function(req, res){
 }
 
 profile = async function (req,res) {
-    if (req.params.userId) {
-        await User.findOne({where: {userId : req.params.userId}})
+    if (req.User) {
+        await User.findOne({where: {userId : req.User.userId}})
         .then(data => {
+            console.log(data.admin)
             res.json(data);
         })
         .catch(err => {

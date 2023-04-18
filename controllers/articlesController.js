@@ -12,7 +12,7 @@ articlesList = async function(req,res) {
 }
 
 articleCreate = async function(req, res) {
-    let article = Article.build({title: req.body.title, subtitle: req.body.subtitle, body: req.body.body})
+    let article = Article.build({title: req.body.title, subtitle: req.body.subtitle, body: req.body.body, user: req.body.userId})
     await article.save()
     .then(data => {
         console.log(article.toJSON());
