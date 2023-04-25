@@ -15,7 +15,8 @@ gameCreate = async function(req, res) {
     let game = Game.build({
         homeTeam: req.body.homeTeam,
         awayTeam: req.body.awayTeam,
-        score: req.body.score,
+        homeScore: req.body.homeScore,
+        awayScore: req.body.awayScore,
         competition: req.body.competition,
         date: req.body.date,
         time: req.body.time

@@ -27,7 +27,7 @@ router.post('/login', async function (req,res, next){
     const jwtKey = "my_secret_key"
     const jwtExpirySeconds = 300
 
-    let payload = { userId: 1};
+    let payload = {user : req.body.userId};
     let token = jwt.sign(payload,jwtKey, {
         algorithm: "HS256",
         expiresIn: jwtExpirySeconds,
@@ -42,7 +42,7 @@ function isAuthorized(req,res,next){
             if (err) {
                 res.status(401).json({error : "Not Authorized"});
             } else {
-                req.User = payload;
+                req.userId = payload;
                 return next();
             }  
         })
@@ -53,6 +53,7 @@ function isAuthorized(req,res,next){
 }
 
 router.get('/profile',isAuthorized ,userController.profile);
+router.post('/userExists', userController.userExists);
 
 
 
