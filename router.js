@@ -27,7 +27,7 @@ router.post('/login', async function (req,res, next){
     const jwtKey = "my_secret_key"
     const jwtExpirySeconds = 300
 
-    let payload = {user : req.body.userId};
+    let payload = {userId : req.body.userId};
     let token = jwt.sign(payload,jwtKey, {
         algorithm: "HS256",
         expiresIn: jwtExpirySeconds,
@@ -42,7 +42,7 @@ function isAuthorized(req,res,next){
             if (err) {
                 res.status(401).json({error : "Not Authorized"});
             } else {
-                req.userId = payload;
+                req.userId = payload.userId;
                 return next();
             }  
         })

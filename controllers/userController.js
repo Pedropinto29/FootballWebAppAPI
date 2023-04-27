@@ -22,8 +22,8 @@ login = async function(req, res){
 }
 
 profile = async function (req,res) {
+    console.log(req)
     if (req.userId) {
-        console.log(req.userId)
         await User.findOne({where: {userId : req.userId}})
         .then(data => {
             console.log(data)
