@@ -9,16 +9,17 @@ const jwt = require('jsonwebtoken')
 router.get('/', (req,res) => res.redirect('/articles'));
 
 // ARTICLES
-router.get('/articles', articlesController.articlesList);
-router.post('/articles', articlesController.articleCreate);
+router.get('/articles', isAuthorized, articlesController.articlesList);
+router.post('/article',isAuthorized, articlesController.articleCreate);
 router.get('/article/:articleId', articlesController.articleFindOne);
 router.put('/article/:articleId', articlesController.articleUpdate);
 router.delete('/article/:articleId', articlesController.articleDelete);
 
 // GAMES
-router.get('/games', gamesController.gamesList);
+router.get('/games', isAuthorized, gamesController.gamesList);
 router.post('/games', gamesController.gameCreate);
-router.put('/game/:gameId', gamesController.gameUpdate);
+router.get('/game/:gameId', isAuthorized, gamesController.gameFindOne);
+router.put('/game/:gameId', isAuthorized, gamesController.gameUpdate);
 
 // USER
 
@@ -27,7 +28,7 @@ router.post('/login', async function (req,res, next){
     const jwtKey = "my_secret_key"
     const jwtExpirySeconds = 300
 
-    let payload = {userId : req.body.userId};
+    let payload = {userId : req.body.userId, admin : req.body.admin};
     let token = jwt.sign(payload,jwtKey, {
         algorithm: "HS256",
         expiresIn: jwtExpirySeconds,
@@ -43,6 +44,7 @@ function isAuthorized(req,res,next){
                 res.status(401).json({error : "Not Authorized"});
             } else {
                 req.userId = payload.userId;
+                req.admin = payload.admin;
                 return next();
             }  
         })

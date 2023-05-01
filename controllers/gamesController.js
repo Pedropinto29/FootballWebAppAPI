@@ -5,7 +5,7 @@ gamesList = async function(req, res) {
     await Game.findAll()
     .then(data => {
         console.log ("All games", JSON.stringify(data, null, 2));
-        res.json(data);
+        res.json({games : data, admin: req.admin});
     }).catch(err => {
         res.status(500).json({message : err.message});
     })
@@ -30,15 +30,24 @@ gameCreate = async function(req, res) {
     })
 }
 
+gameFindOne = async function(req, res) {
+    if (req.params.gameId) {
+        await Game.findOne({ where: {gameId : req.params.gameId}})
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.status(500).json({message : err.message})
+        })
+    }else res.status(400).json({message:"Game not found"})
+}
+
 gameUpdate = async function(req,res) {
+    console.log('heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy')
     if (req.params.gameId > 0) {
         await Game.update(
-            {homeTeam: req.body.homeTeam,
-            awayTeam: req.body.awayTeam,
-            score: req.body.score,
-            competition: req.body.competition,
-            date: req.body.date,
-            time: req.body.time},
+            {homeScore : req.body.homeScore,
+            awayScore: req.body.awayScore},
             {where: {gameId : req.params.gameId}}
         ).then(data => {
             if(data[0]==0) {res.status(400).json({message:'Game not found'})}
@@ -53,4 +62,5 @@ module.exports = {
     gamesList,
     gameCreate,
     gameUpdate,
+    gameFindOne
 }

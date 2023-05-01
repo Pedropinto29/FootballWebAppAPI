@@ -2,17 +2,19 @@ const db = require('../models/index');
 const Article = db.Article;
 
 articlesList = async function(req,res) {
+    console.log(req.admin)
     await Article.findAll()
     .then(data => {
         console.log('All articles', JSON.stringify(data,null,2));
-        res.json(data);
+        res.json({articles : data, admin : req.admin});
     }).catch(err => {
         res.status(500).json({message : err.message});
     })
 }
 
 articleCreate = async function(req, res) {
-    let article = Article.build({title: req.body.title, subtitle: req.body.subtitle, body: req.body.body, user: req.body.userId})
+    console.log("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", req.userId)
+    let article = Article.build({title: req.body.title, subtitle: req.body.subtitle, body: req.body.body, user: req.userId})
     await article.save()
     .then(data => {
         console.log(article.toJSON());
