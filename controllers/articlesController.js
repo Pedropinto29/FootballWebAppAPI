@@ -13,8 +13,7 @@ articlesList = async function(req,res) {
 }
 
 articleCreate = async function(req, res) {
-    console.log("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", req.userId)
-    let article = Article.build({title: req.body.title, subtitle: req.body.subtitle, body: req.body.body, user: req.userId})
+    let article = Article.build({title: req.body.title, subtitle: req.body.subtitle, body: req.body.body, userId: req.userId})
     await article.save()
     .then(data => {
         console.log(article.toJSON());

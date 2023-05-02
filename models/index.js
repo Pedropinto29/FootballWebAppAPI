@@ -10,6 +10,6 @@ db.Game = require('./gamesModel');
 db.User = require('./userModel');
 
 db.Article.belongsTo(db.User, {foreignKey: "userId"});
-db.User.hasMany(db.Article, {foreignKey: "articleId"});
+db.User.hasMany(db.Article, {foreignKey: "userId"});
 
 module.exports = db

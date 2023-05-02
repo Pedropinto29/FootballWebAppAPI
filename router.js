@@ -57,6 +57,9 @@ function isAuthorized(req,res,next){
 router.get('/profile',isAuthorized ,userController.profile);
 router.post('/userExists', userController.userExists);
 
+router.put('/annualPlace/:userId', userController.annualPlace);
+router.get('/username/:userId',userController.username);
+
 
 
 
